@@ -4,13 +4,13 @@ export Adaptation
 using LinearAlgebra: LinearAlgebra
 using Statistics: Statistics
 
-using ..AdvancedHMC: AbstractScalarOrVec
+using ..AdvancedHMC: AbstractScalarOrVec, PhasePoint
 using DocStringExtensions
 
 """
 $(TYPEDEF)
 
-Abstract type for HMC adaptors. 
+Abstract type for HMC adaptors.
 """
 abstract type AbstractAdaptor end
 function getM⁻¹ end
@@ -47,11 +47,11 @@ getϵ(ca::NaiveHMCAdaptor) = getϵ(ca.ssa)
 # TODO: implement consensus adaptor
 function adapt!(
     nca::NaiveHMCAdaptor,
-    θ::AbstractVecOrMat{<:AbstractFloat},
+    z::PhasePoint,
     α::AbstractScalarOrVec{<:AbstractFloat},
 )
-    adapt!(nca.ssa, θ, α)
-    adapt!(nca.pc, θ, α)
+    adapt!(nca.ssa, z, α)
+    adapt!(nca.pc, z, α)
     return nothing
 end
 function reset!(aca::NaiveHMCAdaptor)

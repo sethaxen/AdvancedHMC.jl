@@ -9,12 +9,12 @@ finalize!(::MassMatrixAdaptor) = nothing
 
 function adapt!(
     adaptor::MassMatrixAdaptor,
-    θ::AbstractVecOrMat{<:AbstractFloat},
+    z::PhasePoint,
     α::AbstractScalarOrVec{<:AbstractFloat},
     is_update::Bool=true,
 )
-    resize_adaptor!(adaptor, size(θ))
-    push!(adaptor, θ)
+    resize_adaptor!(adaptor, size(z.θ))
+    push!(adaptor, z.θ)
     is_update && update!(adaptor)
     return nothing
 end
@@ -39,7 +39,7 @@ getM⁻¹(::UnitMassMatrix{T}) where {T} = LinearAlgebra.UniformScaling{T}(one(T
 
 function adapt!(
     ::UnitMassMatrix,
-    ::AbstractVecOrMat{<:AbstractFloat},
+    ::PhasePoint,
     ::AbstractScalarOrVec{<:AbstractFloat},
     is_update::Bool=true,
 )
