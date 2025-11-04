@@ -37,8 +37,9 @@ end
         for dist in [MvNormal(zeros(D), I), Dirichlet(D, 1)]
             for _ in 1:n_samples
                 s = rand(dist)
+                z = PhasePoint(s, randn(D), randn(2)...)
                 for estimator in estimators
-                    push!(estimator, s)
+                    push!(estimator, z)
                 end
             end
 

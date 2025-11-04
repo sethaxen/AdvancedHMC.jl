@@ -6,6 +6,7 @@ abstract type MassMatrixAdaptor <: AbstractAdaptor end
 
 initialize!(::MassMatrixAdaptor, ::Int) = nothing
 finalize!(::MassMatrixAdaptor) = nothing
+Base.push!(ma::MassMatrixAdaptor, z::PhasePoint) = push!(ma, z.θ)
 
 function adapt!(
     adaptor::MassMatrixAdaptor,
@@ -14,7 +15,7 @@ function adapt!(
     is_update::Bool=true,
 )
     resize_adaptor!(adaptor, size(z.θ))
-    push!(adaptor, z.θ)
+    push!(adaptor, z)
     is_update && update!(adaptor)
     return nothing
 end
