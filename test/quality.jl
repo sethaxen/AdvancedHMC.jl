@@ -8,6 +8,6 @@ Test.@testset "Aqua" begin
     Aqua.test_all(AdvancedHMC)
 end
 
-Test.@testset "JET" begin
+VERSION < v"1.12-" && Test.@testset "JET" begin
     JET.test_package(AdvancedHMC; target_defined_modules=true)
 end
