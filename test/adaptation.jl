@@ -37,8 +37,9 @@ end
         for dist in [MvNormal(zeros(D), I), Dirichlet(D, 1)]
             for _ in 1:n_samples
                 s = rand(dist)
+                z = PhasePoint(s, randn(D), randn(2)...)
                 for estimator in estimators
-                    push!(estimator, s)
+                    push!(estimator, z)
                 end
             end
 
@@ -60,14 +61,15 @@ end
 
     @testset "MassMatrixAdaptor constructors" begin
         θ = [0.0, 0.0, 0.0, 0.0]
+        z = PhasePoint(θ, randn(length(θ)), randn(2)...)
         pc1 = MassMatrixAdaptor(UnitEuclideanMetric) # default dim = 2
         pc2 = MassMatrixAdaptor(DiagEuclideanMetric)
         pc3 = MassMatrixAdaptor(DenseEuclideanMetric)
 
         # Var adaptor dimention should be increased to length(θ) from 2
-        AdvancedHMC.adapt!(pc1, θ, 1.0)
-        AdvancedHMC.adapt!(pc2, θ, 1.0)
-        AdvancedHMC.adapt!(pc3, θ, 1.0)
+        AdvancedHMC.adapt!(pc1, z, 1.0)
+        AdvancedHMC.adapt!(pc2, z, 1.0)
+        AdvancedHMC.adapt!(pc3, z, 1.0)
         @test AdvancedHMC.Adaptation.getM⁻¹(pc2) == ones(length(θ))
         @test AdvancedHMC.Adaptation.getM⁻¹(pc3) ==
             LinearAlgebra.diagm(0 => ones(length(θ)))
@@ -75,6 +77,7 @@ end
 
     @testset "Stan HMC adaptors" begin
         θ = [0.0, 0.0, 0.0, 0.0]
+        z = PhasePoint(θ, randn(length(θ)), randn(2)...)
 
         adaptor1 = StanHMCAdaptor(
             MassMatrixAdaptor(UnitEuclideanMetric), NesterovDualAveraging(0.8, 0.5)
@@ -90,7 +93,7 @@ end
             @test a.state.window_start == 76
             @test a.state.window_end == 950
             @test a.state.window_splits == [100, 150, 250, 450, 950]
-            AdvancedHMC.adapt!(a, θ, 1.0)
+            AdvancedHMC.adapt!(a, z, 1.0)
         end
         @test AdvancedHMC.Adaptation.getM⁻¹(adaptor2) == ones(length(θ))
         @test AdvancedHMC.Adaptation.getM⁻¹(adaptor3) ==
