@@ -46,9 +46,7 @@ getϵ(ca::NaiveHMCAdaptor) = getϵ(ca.ssa)
 
 # TODO: implement consensus adaptor
 function adapt!(
-    nca::NaiveHMCAdaptor,
-    z::PhasePoint,
-    α::AbstractScalarOrVec{<:AbstractFloat},
+    nca::NaiveHMCAdaptor, z::PhasePoint, α::AbstractScalarOrVec{<:AbstractFloat}
 )
     adapt!(nca.ssa, z, α)
     adapt!(nca.pc, z, α)

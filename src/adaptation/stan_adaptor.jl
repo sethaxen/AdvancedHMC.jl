@@ -134,11 +134,7 @@ function is_in_window(a::StanHMCAdaptor)
 end
 is_window_end(a::StanHMCAdaptor) = a.state.i in a.state.window_splits
 
-function adapt!(
-    tp::StanHMCAdaptor,
-    z::PhasePoint,
-    α::AbstractScalarOrVec{<:AbstractFloat},
-)
+function adapt!(tp::StanHMCAdaptor, z::PhasePoint, α::AbstractScalarOrVec{<:AbstractFloat})
     tp.state.i += 1
 
     adapt!(tp.ssa, z, α)

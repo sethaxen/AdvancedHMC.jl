@@ -210,9 +210,7 @@ function adapt_stepsize!(
 end
 
 function adapt!(
-    da::NesterovDualAveraging,
-    z::PhasePoint,
-    α::AbstractScalarOrVec{<:AbstractFloat},
+    da::NesterovDualAveraging, z::PhasePoint, α::AbstractScalarOrVec{<:AbstractFloat}
 )
     adapt_stepsize!(da, α)
     return nothing
